@@ -1,0 +1,1 @@
+// Represents an individual room on the board. It could display the room name and any players or items within.

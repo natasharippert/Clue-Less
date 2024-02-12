@@ -1,0 +1,1 @@
+// Represents a hallway connecting rooms. It might indicate if a hallway is occupied by a player.

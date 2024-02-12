@@ -1,0 +1,133 @@
+.App {
+  text-align: center;
+  margin: 20px;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-row, .bottom-row {
+  display: flex;
+}
+
+.message-board, .game-board, .controller, .card-display, .notepad {
+  border: 1px solid #000;
+  margin: 10px;
+  padding: 10px;
+}
+
+.message-board {
+  background-color: red;
+  height: 150px; 
+  flex: 1;
+}
+
+.game-board {
+  background-color: white;
+  flex: 2;
+}
+
+.controller {
+  background-color: brown;
+  flex: 1;
+}
+
+.card-display {
+  background-color: grey;
+  flex: 1;
+}
+
+.notepad {
+  display: flex;
+  background-color: yellow;
+  height: 100px;
+  width:100%;
+}
+
+
+/* ----------------------------CONTROLS----------------------------*/
+.controller {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 10px;
+  gap: 10px; /* Adjust as needed */
+  background-color: #8B4513; /* Brown background as per the image */
+}
+
+.movement-buttons {
+  display: grid;
+  grid-template-columns: auto auto auto; /* 3 columns grid */
+  grid-template-rows: auto auto auto; /* 3 rows grid */
+  gap: 10px; /* Space between buttons */
+  justify-items: center;
+  align-items: center;
+}
+
+.button {
+  /* Styling for all buttons */
+  border: 1px solid #000; /* Black border */
+  padding: 10px;
+  cursor: pointer;
+  background-color: #228B22; /* Green background for movement buttons */
+  color: white; /* White text */
+  font-weight: bold;
+  text-align: center;
+}
+
+.button.up { grid-column: 2; grid-row: 1; }
+.button.left { grid-column: 1; grid-row: 2; }
+.button.right { grid-column: 3; grid-row: 2; }
+.button.down { grid-column: 2; grid-row: 3; }
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+}
+
+.button.accuse {
+  background-color: #FF0000; /* Red background for accuse button */
+}
+
+.button.suggest {
+  background-color: #FFA500; /* Orange background for suggest button */
+}
