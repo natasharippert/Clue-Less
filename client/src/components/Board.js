@@ -1,20 +1,25 @@
-//  This component will render the game board, showing the rooms in a 3x3 grid, hallways, and player positions.
-
-// import React from 'react';
-
-// const Board = () => {
-//   return <div>Board Component</div>;
-// };
-
-// export default Board;
-
 import React from 'react';
-//import './GameBoard.css';
+// import './GameBoard.css';
+import { room_cards } from './Card';
 
 const GameBoard = () => {
+  // Simplified layout with explicit placement of rooms and hallways
+  // "null" represents a blank space
+  const layout = [
+    room_cards[0].name, 'Hallway', room_cards[1].name, 'Hallway', room_cards[2].name,
+    'Hallway', null, 'Hallway', null, 'Hallway',
+    room_cards[3].name, 'Hallway', room_cards[4].name, 'Hallway', room_cards[5].name,
+    'Hallway', null, 'Hallway', null, 'Hallway',
+    room_cards[6].name, 'Hallway', room_cards[7].name, 'Hallway', room_cards[8].name
+  ];
+
   return (
     <div className="game-board">
-      Game Board
+      {layout.map((item, index) => (
+        <div key={index} className={`cell ${item ? (item.startsWith('Hallway') ? 'hallway' : 'room') : 'blank'}`}>
+          {item || ''}
+        </div>
+      ))}
     </div>
   );
 };

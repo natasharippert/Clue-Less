@@ -60,9 +60,31 @@
 }
 
 .game-board {
-  background-color: white;
-  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(5, 100px); /* 5 columns, adjust size as needed */
+  grid-template-rows: repeat(5, 100px); /* 5 rows, adjust size as needed */
+  gap: 5px; /* Space between cells, adjust as needed */
 }
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000; /* Optional, for visual structure */
+}
+
+.room {
+  background-color: #f0e68c; /* Room color */
+}
+
+.hallway {
+  background-color: #a9a9a9; /* Hallway color */
+}
+
+.blank {
+  background-color: transparent; /* Blank spaces, adjust as needed */
+}
+
 
 .controller {
   background-color: brown;
@@ -70,8 +92,15 @@
 }
 
 .card-display {
+  display: flex;
+  justify-content: center;
   background-color: grey;
   flex: 1;
+}
+
+.card-image {
+  width: 100px; /* or any size */
+  height: auto; /* maintain aspect ratio */
 }
 
 .notepad {
