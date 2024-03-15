@@ -15,10 +15,10 @@ import React from 'react';
 //import './CardDisplay.css';
 import { character_cards } from './Card';
 
-const CardDisplay = () => {
+const CardDisplay = ({ cards }) => { // cards prop to be passed from App.js
   return (
     <div className="card-display">
-      {character_cards.map((card, index) => (
+      {cards.map((card, index) => (
         <div key={index} className="card">
           <img src={card.imageURL} alt={card.name} className="card-image" />
         </div>

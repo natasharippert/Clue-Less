@@ -1,7 +1,4 @@
-/* Card Class for Clue-Less*/
-
-//Initialization
-export class Card {
+class Card {
     constructor(type, name, imageURL) {
         this.type = type;
         this.name = name;
@@ -11,7 +8,7 @@ export class Card {
 }
 
 // six characters
-export const character_cards = [
+const character_cards = [
     new Card('character', 'Jim', 'images/card_jim.png'),
     new Card('character', 'Pam', 'images/card_pam.png'),
     new Card('character', 'Dwight', 'images/card_dwight.png'),
@@ -21,7 +18,7 @@ export const character_cards = [
   ];
 
   // six weapons
-export const weapon_cards = [
+const weapon_cards = [
     new Card('weapon', 'Dundie Trophy', 'images/card_trophy.png'),
     new Card('weapon', 'Poisoned Pretzel', 'images/card_pretzel.png'),
     new Card('weapon', 'Coffee Mug', 'images/card_mug.png'),
@@ -31,7 +28,7 @@ export const weapon_cards = [
 ]
 
 // nine rooms
-export const room_cards = [
+const room_cards = [
     new Card('room', 'Reception', 'images/card_reception.png'),
     new Card('room', 'Conference Room', 'images/card_conference.png'),
     new Card('room', 'Break Room', 'images/card_break.png'),
@@ -93,3 +90,15 @@ function ResetDeck () {
     ShuffleDeck();
 }
 
+
+module.exports = {
+    Card,
+    character_cards,
+    weapon_cards,
+    room_cards,
+    selectRandomCard,
+    WinningHand,
+    ShuffleDeck,
+    DealCards,
+    ResetDeck,
+};
