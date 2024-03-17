@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Clue-Less Game</h2>
+      
       {!sessionId ? (
         <MainMenu setSessionId={setSessionId} setParticipants={setParticipants}/>
       ) : !gameStarted ? (
@@ -46,13 +46,19 @@ function App() {
       ) : (
         // Game view
         <>
+        <h2>Clue-Less Game</h2>
           <div className="top-row">
-            <MessageBoard />
-            <GameBoard />
+            <div class="left-side-main">
+              <MessageBoard />
+              <CardDisplay cards={dealtCards} />
+            </div>
+            <div class="right-side-main">
+              <GameBoard />
+            </div> 
         </div>
         <div className="bottom-row">
           <Controls />
-          <CardDisplay cards={dealtCards} />
+          
         </div>
         <Notepad />
         </>

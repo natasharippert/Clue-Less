@@ -36,12 +36,14 @@ const MainMenu = ({ setSessionId }) => {
 
   return (
     <div>
-      <button onClick={startNewGame}>Start New Game</button>
+      <h1 class="menu-heading">CLUE</h1><span class="additional-text">(Less)</span><br></br><br></br><br></br><br></br>
+      <button class="menu-button" onClick={startNewGame}>Start New Game</button><br></br><br></br><br></br>
       <input
+        class="menu-input"
         value={inputSessionId}
         onChange={(e) => setInputSessionId(e.target.value)}
-      />
-      <button onClick={joinGame}>Join Game</button>
+      /><br></br>
+      <button class="menu-button" onClick={joinGame}>Join Game</button>
     </div>
   );
 };

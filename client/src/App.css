@@ -43,8 +43,45 @@
   flex-direction: column;
 }
 
+.menu-button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 5px;
+  cursor: pointer;
+  width: 200px;
+  border-radius: 10px;
+  border: none;
+}
+
+.menu-input{
+  /* margin: 5px; */
+  font-size: 20px;
+  padding: 10px 0px;
+  width: 200px;
+}
+
+.menu-heading{
+  font-size: 100px;
+  font-weight: bolder;
+  display: inline;
+}
+
+.back-button{
+  /* font-size: 20px; */
+  font-weight: bolder;
+  text-align: left;
+  text-decoration: none;
+}
+
 .top-row, .bottom-row {
   display: flex;
+}
+.left-side-main{
+  width:35%
+}
+
+.right-side-main {
+  width: 65%
 }
 
 .message-board, .game-board, .controller, .card-display, .notepad {
@@ -53,17 +90,18 @@
   padding: 10px;
 }
 
-.message-board {
+/* .message-board {
   background-color: red;
   height: 150px; 
   flex: 1;
-}
+} */
 
 .game-board {
   display: grid;
   grid-template-columns: repeat(5, 100px); /* 5 columns, adjust size as needed */
   grid-template-rows: repeat(5, 100px); /* 5 rows, adjust size as needed */
   gap: 5px; /* Space between cells, adjust as needed */
+  justify-content: center;
 }
 
 .cell {
@@ -92,14 +130,19 @@
 }
 
 .card-display {
+  background-color:#f1f1f1;
+  border: none;
+  border-radius: 10px;
+}
+
+.cards-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  background-color: grey;
-  flex: 1;
 }
 
 .card-image {
-  width: 100px; /* or any size */
+  width: 80px;
   height: auto; /* maintain aspect ratio */
 }
 
@@ -108,6 +151,78 @@
   background-color: yellow;
   height: 100px;
   width:100%;
+}
+
+.lobby-middle{
+  display:flex;
+  text-align: left;
+ 
+}
+.participants, .characters {
+  width:50%;
+  padding: 15px;
+  margin-left: 30px;
+  background:#f1f1f1;
+  border-radius: 20px;
+  
+}
+
+/* MessageBoard.css */
+.messages-container {
+  margin-bottom: 20px;
+  width: 95%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 10px;
+  background-color: #e9e9e9; /* Optional: background color for contrast */
+  padding: 10px; /* Optional: for some spacing inside the container */
+  border-radius: 10px; /* Optional: for rounded corners */
+}
+
+.input-container {
+  display: flex;
+  width: 100%; /* Ensure the container spans the full width */
+  align-items: center; /* Align items vertically */
+}
+
+.message-board {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 15px;
+  width: 90%;
+  border:none;
+}
+
+.messages {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.message {
+  background-color: #ffffff;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+input[type="text"] {
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 70%;
+  border: 1px solid #ccc;
+}
+
+.messages-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: blue;
+  color: white;
+  cursor: pointer;
 }
 
 

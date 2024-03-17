@@ -15,16 +15,20 @@ import React from 'react';
 //import './CardDisplay.css';
 import { character_cards } from './Card';
 
-const CardDisplay = ({ cards }) => { // cards prop to be passed from App.js
+const CardDisplay = ({ cards }) => {
   return (
     <div className="card-display">
-      {cards.map((card, index) => (
-        <div key={index} className="card">
-          <img src={card.imageURL} alt={card.name} className="card-image" />
-        </div>
-      ))}
+      <h2>Your Cards</h2>
+      <div className="cards-container"> {/* Add this wrapper */}
+        {cards.map((card, index) => (
+          <div key={index} className="card">
+            <img src={card.imageURL} alt={card.name} className="card-image" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
+
 
 export default CardDisplay;
