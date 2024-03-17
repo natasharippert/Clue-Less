@@ -14,9 +14,9 @@ const GameBoard = () => {
   ];
 
   return (
-    <div className="game-board">
+    <div class="game-board">
       {layout.map((item, index) => (
-        <div key={index} className={`cell ${item ? (item.startsWith('Hallway') ? 'hallway' : 'room') : 'blank'}`}>
+        <div key={index} class={`cell ${item ? (item.startsWith('Hallway') ? 'hallway' : 'room') : 'blank'}`}>
           {item || ''}
         </div>
       ))}

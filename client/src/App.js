@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SocketContext } from './SocketContext';
+import { SocketContext } from './components/SocketContext';
 import './App.css';
 // Import components
 import MainMenu from './components/MainMenu';
@@ -37,7 +37,7 @@ function App() {
 }, [socket]);
 
   return (
-    <div className="App">
+    <div class="App">
       
       {!sessionId ? (
         <MainMenu setSessionId={setSessionId} setParticipants={setParticipants}/>
@@ -47,16 +47,16 @@ function App() {
         // Game view
         <>
         <h2>Clue-Less Game</h2>
-          <div className="top-row">
+          <div class="top-row">
             <div class="left-side-main">
-              <MessageBoard />
+              <MessageBoard sessionId={sessionId}/>
               <CardDisplay cards={dealtCards} />
             </div>
             <div class="right-side-main">
               <GameBoard />
             </div> 
         </div>
-        <div className="bottom-row">
+        <div class="bottom-row">
           <Controls />
           
         </div>

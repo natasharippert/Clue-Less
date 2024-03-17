@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { SocketContext } from '../SocketContext'; // Adjust if necessary
+import { SocketContext } from './SocketContext'; // Adjust if necessary
 
 const MainMenu = ({ setSessionId }) => {
   const [inputSessionId, setInputSessionId] = useState('');

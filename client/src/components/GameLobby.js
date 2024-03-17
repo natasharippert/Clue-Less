@@ -1,6 +1,6 @@
 // GameLobby.js
 import React, { useContext } from 'react';
-import { SocketContext } from '../SocketContext';
+import { SocketContext } from './SocketContext';
 import { character_cards } from './Card';
 
 const GameLobby = ({ sessionId, participants, onStartGame }) => {

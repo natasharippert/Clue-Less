@@ -36,6 +36,14 @@ const gameSessions = {};
 io.on('connection', (socket) => {
     console.log('New client connected');
 
+    // Listen for message sending events
+    socket.on('sendMessage', ({ message, sessionId }) => {
+        // Broadcast message to all clients in the same session
+        console.log(`Received message for session ${sessionId}: ${message}`);
+        console.log(`Broadcasting message to session ${sessionId}`);
+        io.to(sessionId).emit('receiveMessage', message);
+    });
+
     socket.on('startGame', (sessionId) => {
         const session = gameSessions[sessionId];
         if (session && session.players.includes(socket.id)) { // Simple validation

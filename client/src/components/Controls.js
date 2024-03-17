@@ -3,17 +3,17 @@ import React from 'react';
 
 const Controls = () => {
   return (
-    <div className="controller">
-      <div className="movement-buttons">
+    <div class="controller">
+      <div class="movement-buttons">
         {/* Replace divs with button elements if they should be clickable */}
-        <div className="button up">↑</div>
-        <div className="button left">←</div>
-        <div className="button right">→</div>
-        <div className="button down">↓</div>
+        <div class="button up">↑</div>
+        <div class="button left">←</div>
+        <div class="button right">→</div>
+        <div class="button down">↓</div>
       </div>
-      <div className="action-buttons">
-        <button className="button accuse">accuse</button>
-        <button className="button suggest">suggest</button>
+      <div class="action-buttons">
+        <button class="button accuse">accuse</button>
+        <button class="button suggest">suggest</button>
       </div>
     </div>
   );

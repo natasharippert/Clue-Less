@@ -3,7 +3,7 @@ import React from 'react';
 
 const Notepad = () => {
   return (
-    <textarea className="notepad" placeholder="Notepad">
+    <textarea class="notepad" placeholder="Notepad">
     </textarea>
   );
 };
