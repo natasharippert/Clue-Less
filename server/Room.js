@@ -1,9 +1,10 @@
 // Room object
 
 //NOTE: can I use name val pairs???
-function Room(name, up=null, left=null, right=null, down=null, passage=null, occupants=new Set(), weapons=new Set(), occupancy = 50) {
+function Room(name, imgURL, occupancy = 50, up=null, left=null, right=null, down=null, passage=null, occupants=new Set(), weapons=new Set()) {
    return {
       name: name,
+      imgURL: imgURL,
 		up: up,
 		left: left,
 		right: right,
@@ -36,3 +37,5 @@ function Room(name, up=null, left=null, right=null, down=null, passage=null, occ
    } // end obj
 
 } // end Room
+
+module.exports = { Room };
