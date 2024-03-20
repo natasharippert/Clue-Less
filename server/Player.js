@@ -47,19 +47,31 @@ function Player(userID, name, startRoom, nextPlayer) {
 
       
 
-      // polls suggestion around table
-      pollSuggestion(suggestion) {
-
-      },
 
       // Like move, but can go anywhere bc of someone’s suggestion
       jump(room) {
          this.room = room;
       },
 
+      // allow player to decide which card to show if polled successfully
+      showCard(cardArray) {
+         // show all cards to player and make them select one
+      }, // end showCard
 
-      // allow player to decide what card to show when polled 
-      showCard(card) {},
+      // checks for matches when polled 
+      checkPoll(suggestion) {
+         let matches = [];
+         
+         for (let ic = 0; ic < length(this.cardList); ic++) {
+            for (let is = 0; is < length(suggestion); is++) {
+               if (this.cardList[ic].name === suggestion[is]) {
+                  matches.push(this.cardList[ic]);
+               }
+            }
+         }
+
+         return matches;
+      },
 
       // Sets property that is the object the userID interfaces with
       setInterface(userID){
@@ -76,3 +88,6 @@ function Player(userID, name, startRoom, nextPlayer) {
    } // end obj
 
 } // end Player
+
+
+module.exports = { Player };
