@@ -1,9 +1,10 @@
 // player object
 
-function Player(userID, name, startRoom, nextPlayer) {
+function Player(userID, name, charName, startRoom, nextPlayer) {
    return {
       userID: userID,
       name: name,
+      character: charName,
       room: startRoom,
       cardList: [],
       next: nextPlayer,
@@ -41,6 +42,9 @@ function Player(userID, name, startRoom, nextPlayer) {
                moved = true;
                break; 
          } // end switch
+
+         // Change room property
+         this.room = this.room[direction];
 
          return moved;
       }, // end move
