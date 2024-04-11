@@ -19,7 +19,7 @@ function main() {
 
 
    // Initialize users
-
+   let users;
 
 
    //Lobby logic
@@ -45,6 +45,14 @@ function main() {
    ]
 
    roomLinks(rooms);
+
+   let startRooms;
+   startRooms['Jim'] = rooms[7].left;
+   startRooms['Pam'] = rooms[3].down;
+   startRooms['Dwight'] = rooms[2].down;
+   startRooms['Angela'] = rooms[1].right;
+   startRooms['Michael'] = rooms[8].left;
+   startRooms['Andy'] = rooms[0].down;
 
    // Initialize cards
    // six characters
@@ -82,7 +90,20 @@ function main() {
    // Initialize players
    let players = [];
 
+   let nextPlayer;
+   for (let ip = users.length - 1; ip >= 0 ; ip--) {
+      startRoom = startRooms[users.charName];
+      if (ip == users.length - 1) {
+         nextPlayer = null;
+      }
+      else {
+         nextPlayer = players[ip+1];
+      }
+      players[ip] = new Player(users.ID, users.name, users.charName, startRoom, nextPlayer);
+   }
 
+   // Linked list loops around like play around table
+   players[ip = users.length - 1].next = players[0];
 
 
 
@@ -90,6 +111,9 @@ function main() {
    let hands = allCards.dealAll(players.length);
 
    // assign hands to players
+   for (let ip = 0; ip < players.length; ip++) {
+      players[ip].cardList = hands[ip];
+   }
 
    // Start Gameplay
    let gameOver = false;
@@ -119,9 +143,7 @@ function main() {
                   move = pollAction();
 
                   if (activePlayer.room[move] != null && !activePlayer.room.isfull()) {
-                     activePlayer.move(move);
-
-                     hasMoved = true;
+                     hasMoved = activePlayer.move(move);
                   }
                   else {
                      // tell user that move is not allowed
@@ -235,41 +257,89 @@ function roomLinks(roomArray) {
       6  7  8 
    */
    // room 0 
-   roomArray[0].right = roomArray[1];
-   roomArray[0].down = roomArray[3];
+   roomArray[0].right = new Room('hallway', hwURL, 1);
+   roomArray[0].right.right = roomArray[1];
+	roomArray[0].right.left = roomArray[0];
+   roomArray[0].down = new Room('hallway', hwURL, 1);
+   roomArray[0].down.down = roomArray[3];
+	roomArray[0].down.up = roomArray[0];
    roomArray[0].passage = roomArray[8];
    // room 1 
-   roomArray[1].right = roomArray[2];
-   roomArray[1].left = roomArray[0];
-   roomArray[1].down = roomArray[4];
+   roomArray[1].right = new Room('hallway', hwURL, 1);
+   roomArray[1].right.right = roomArray[2];
+	roomArray[1].right.left = roomArray[1];
+   roomArray[1].left = new Room('hallway', hwURL, 1);
+   roomArray[1].left.left = roomArray[0];
+	roomArray[1].left.right = roomArray[1];
+   roomArray[1].down = new Room('hallway', hwURL, 1);
+   roomArray[1].down.down = roomArray[4];
+	roomArray[1].down.up = roomArray[1];
    // room 2 
-   roomArray[2].left = roomArray[1];
-   roomArray[2].down = roomArray[5];
+   roomArray[2].left = new Room('hallway', hwURL, 1);
+   roomArray[2].left.left = roomArray[1];
+	roomArray[2].left.right = roomArray[2];
+   roomArray[2].down = new Room('hallway', hwURL, 1);
+   roomArray[2].down.down = roomArray[5];
+	roomArray[2].down.up = roomArray[2];
    roomArray[2].passage = roomArray[6];
    // room 3 
-   roomArray[3].right = roomArray[4];
-   roomArray[3].up = roomArray[0];
-   roomArray[3].down = roomArray[6];
+   roomArray[3].right = new Room('hallway', hwURL, 1);
+   roomArray[3].right.right = roomArray[4];
+	roomArray[3].right.left = roomArray[3];
+   roomArray[3].up = new Room('hallway', hwURL, 1);
+   roomArray[3].up.up = roomArray[0];
+	roomArray[3].up.down = roomArray[3];
+   roomArray[3].down = new Room('hallway', hwURL, 1);
+   roomArray[3].down.down = roomArray[6];
+	roomArray[3].down.up = roomArray[3];
    // room 4 
-   roomArray[4].right = roomArray[5];
-   roomArray[4].left = roomArray[3];
-   roomArray[4].up = roomArray[1];
-   roomArray[4].down = roomArray[7];
+   roomArray[4].right = new Room('hallway', hwURL, 1);
+   roomArray[4].right.right = roomArray[5];
+	roomArray[4].right.left = roomArray[4];
+   roomArray[4].left = new Room('hallway', hwURL, 1);
+   roomArray[4].left.left = roomArray[3];
+	roomArray[4].left.right = roomArray[4];
+   roomArray[4].up = new Room('hallway', hwURL, 1);
+   roomArray[4].up.up = roomArray[1];
+	roomArray[4].up.down = roomArray[4];
+   roomArray[4].down = new Room('hallway', hwURL, 1);
+   roomArray[4].down.down = roomArray[7];
+	roomArray[4].down.up = roomArray[4];
    // room 5 
-   roomArray[5].left = roomArray[4];
-   roomArray[5].up = roomArray[2];
-   roomArray[5].down = roomArray[8];
+   roomArray[5].left = new Room('hallway', hwURL, 1);
+   roomArray[5].left.left = roomArray[4];
+	roomArray[5].left.right = roomArray[5];
+   roomArray[5].up = new Room('hallway', hwURL, 1);
+   roomArray[5].up.up = roomArray[2];
+	roomArray[5].up.down = roomArray[5];
+   roomArray[5].down = new Room('hallway', hwURL, 1);
+   roomArray[5].down.down = roomArray[8];
+	roomArray[5].down.up = roomArray[5];
    // room 6 
-   roomArray[6].right = roomArray[7];
-   roomArray[6].up = roomArray[3];
+   roomArray[6].right = new Room('hallway', hwURL, 1);
+   roomArray[6].right.right = roomArray[7];
+	roomArray[6].right.left = roomArray[6];
+   roomArray[6].up = new Room('hallway', hwURL, 1);
+   roomArray[6].up.up = roomArray[3];
+	roomArray[6].up.down = roomArray[6];
    roomArray[6].passage = roomArray[2];
    // room 7 
-   roomArray[7].right = roomArray[8];
-   roomArray[7].left = roomArray[6];
-   roomArray[7].up = roomArray[4];
+   roomArray[7].right = new Room('hallway', hwURL, 1);
+   roomArray[7].right.right = roomArray[8];
+	roomArray[7].right.left = roomArray[7];
+   roomArray[7].left = new Room('hallway', hwURL, 1);
+   roomArray[7].left.left = roomArray[6];
+	roomArray[7].left.right = roomArray[7];
+   roomArray[7].up = new Room('hallway', hwURL, 1);
+   roomArray[7].up.up = roomArray[4];
+	roomArray[7].up.down = roomArray[7];
    // room 8
-   roomArray[8].left = roomArray[7];
-   roomArray[8].up = roomArray[5];
+   roomArray[8].left = new Room('hallway', hwURL, 1);
+   roomArray[8].left.left = roomArray[7];
+	roomArray[8].left.right = roomArray[8];
+   roomArray[8].up = new Room('hallway', hwURL, 1);
+   roomArray[8].up.up = roomArray[5];
+	roomArray[8].up.down = roomArray[8];
    roomArray[8].passage = roomArray[0];
    
 } // end roomLinks
