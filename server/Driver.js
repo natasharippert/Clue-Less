@@ -376,3 +376,5 @@ function grabProps(array, propChar) {
 
    return out;
 }
+
+module.exports = { makeSuggestion };
