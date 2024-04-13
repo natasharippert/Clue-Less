@@ -185,28 +185,59 @@ function main() {
    } // end game
 
 
+}function makeSuggestion(player, suspect, weapon, suggestedRoom, isAccusation = false) {
+   // Ensure the suggestion is made in the player's current room unless it is an accusation
+   if (!isAccusation && suggestedRoom !== player.room.name) {
+       console.error("Cannot make a suggestion in a different room");
+       return null; // Or handle this case appropriately in your game logic
+   }
+
+   // If it's an accusation, handle the game state changes
+   if (isAccusation) {
+       player.active = false;  // Consider what "active" means in your game context
+       player.myTurn = false; // Ends the player's turn
+   }
+
+   // Create the suggestion object
+   let suggestion = {
+       "suspect": suspect,
+       "weapon": weapon,
+       "room": suggestedRoom
+   };
+
+   emitSuggestionToOthers(player, suggestion);
+
+   return suggestion;
+}
+
+// Helper function to emit suggestion to other players
+function emitSuggestionToOthers(player, suggestion) {
+   io.to(player.gameRoom).emit('newSuggestion', {
+       player: player.name,
+       suggestion: suggestion
+   });
 }
 
 
-function makeSuggestion(player, suspect, weapon, room, accusation = false) {
-   // if (!accusation && room != player.room) {
-   //    error("")
-   // }
-   if (accusation) {
-      player.active = false;
-      player.myTurn = false;
-   }
-   else {
-      room = player.room;
-   }
+// function makeSuggestion(player, suspect, weapon, room, accusation = false) {
+//    // if (!accusation && room != player.room) {
+//    //    error("")
+//    // }
+//    if (accusation) {
+//       player.active = false;
+//       player.myTurn = false;
+//    }
+//    else {
+//       room = player.room;
+//    }
 
-   let suggestion = {
-      "suspect": suspect, 
-      "weapon": weapon, 
-      "room": room
-   };
-   return suggestion;
-} // end makeSuggestion
+//    let suggestion = {
+//       "suspect": suspect, 
+//       "weapon": weapon, 
+//       "room": room
+//    };
+//    return suggestion;
+// } // end makeSuggestion
 
 function checkAccusation(accusation, secret) {
    let result = false;

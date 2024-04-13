@@ -10,6 +10,47 @@ import Controls from './components/Controls';
 import CardDisplay from './components/CardDisplay';
 import Notepad from './components/Notepad';
 import CharacterDisplay from './components/Character';
+class Card {
+  constructor(type, name, imageURL) {
+      this.type = type;
+      this.name = name;
+      this.imageURL = imageURL;
+  }
+
+}
+
+// six characters
+const character_cards = [
+  new Card('character', 'Jim', 'images/card_jim.png'),
+  new Card('character', 'Pam', 'images/card_pam.png'),
+  new Card('character', 'Dwight', 'images/card_dwight.png'),
+  new Card('character', 'Angela', 'images/card_angela.png'),
+  new Card('character', 'Michael', 'images/card_michael.png'),
+  new Card('character', 'Andy', 'images/card_andy.png')
+];
+
+// six weapons
+const weapon_cards = [
+  new Card('weapon', 'Dundie Trophy', 'images/card_trophy.png'),
+  new Card('weapon', 'Poisoned Pretzel', 'images/card_pretzel.png'),
+  new Card('weapon', 'Coffee Mug', 'images/card_mug.png'),
+  new Card('weapon', 'Bacon Grill', 'images/card_grill.png'),
+  new Card('weapon', 'Dunder Mifflin Paper', 'images/card_paper.png'),
+  new Card('weapon', 'Rabid Bat', 'images/card_bat.png')
+]
+
+// nine rooms
+const room_cards = [
+  new Card('room', 'Reception', 'images/card_reception.png'),
+  new Card('room', 'Conference Room', 'images/card_conference.png'),
+  new Card('room', 'Break Room', 'images/card_break.png'),
+  new Card('room', 'Annex', 'images/card_annex.png'),
+  new Card('room', 'Accounting', 'images/card_accounting.png'),
+  new Card('room', 'Parking lot', 'images/card_parking.png'),
+  new Card('room', 'Warehouse', 'images/card_warehouse.png'),
+  new Card('room', 'Kitchen', 'images/card_kitchen.png'),
+  new Card('room', 'Michaels Office', 'images/card_office.png'),
+]
 
 function App() {
   const [sessionId, setSessionId] = useState(null); // State to track the current session ID
@@ -18,7 +59,7 @@ function App() {
   const socket = useContext(SocketContext);
   const [dealtCards, setDealtCards] = useState([]);
   const [character, setCharacter] = useState(null);
-
+  const [suggestion, setSuggestion] = useState(null);
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -28,9 +69,21 @@ function App() {
       // You might want to deal cards here or ensure all game setup logic is triggered
   });
 
+  socket.on('joinGame', (sessionId) => {
+    console.log(`Joining session: ${sessionId}`); // Ensure this is logging correctly
+    socket.join(sessionId);
+  });
+
+  
+
     socket.on('dealtCards', (cards) => {
         setDealtCards(cards); // Store dealt cards
     });
+
+    // socket.on('receiveMessage', (message) => {
+    //   console.log('New message received:', message); // Debugging output
+    //   setMessages((prevMessages) => [...prevMessages, message]);
+    // });
 
     socket.on('assignCharacter', (character) => {
       console.log('Received character:', character);
@@ -46,6 +99,7 @@ function App() {
         socket.off('gameIsStarting');
         socket.off('dealtCards');
         socket.off('assignCharacter');
+        // socket.off('receiveMessage');
     };
 }, [socket]);
 
@@ -63,6 +117,9 @@ console.log('Character in state:', character);
         <>
         <h2>Clue-Less Game</h2>
         {character && <CharacterDisplay character={character} />}
+        {suggestion && (
+            <p>Suggestion: {suggestion.character} in the {suggestion.room} with the {suggestion.weapon}</p>
+          )}
           <div class="top-row">
             <div class="left-side-main">
               <MessageBoard sessionId={sessionId}/>
@@ -73,7 +130,16 @@ console.log('Character in state:', character);
             </div> 
         </div>
         <div class="bottom-row">
-          <Controls />
+        <Controls
+          characters={character_cards} 
+          rooms={room_cards}           
+          weapons={weapon_cards}       
+          onMakeSuggestion={(char, room, weap) => {
+            console.log(`Suggestion made with ${char}, ${room}, ${weap}`);
+            setSuggestion({ character: char, room: room, weapon: weap });
+            // You can also send this to the server here
+  }}
+/>
           
         </div>
         <Notepad />

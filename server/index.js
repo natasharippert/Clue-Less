@@ -44,22 +44,46 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('receiveMessage', message);
     });
 
+    socket.on('makeSuggestion', (data) => {
+        const suggestionMessage = `${data.playerName} suggests it was ${data.character} in the ${data.room} with the ${data.weapon}.`;
+        console.log('Emitting suggestion:', suggestionMessage);
+        io.to(data.sessionId).emit('receiveMessage', suggestionMessage);
+    });
+
     socket.on('startGame', (sessionId) => {
         const session = gameSessions[sessionId];
         if (session && session.players.includes(socket.id)) { // Simple validation
             console.log(`Starting game for session: ${sessionId}`);
             io.to(sessionId).emit('gameIsStarting');
+
+            // Randomize character cards
+            const shuffledCharacters = shuffleArray([...character_cards]); // Clone to avoid mutating original array
+            session.players.forEach((playerId, index) => {
+                const character = shuffledCharacters[index % shuffledCharacters.length];
+                io.to(playerId).emit('assignCharacter', character);
+            });
+
             WinningHand(); // Select winning hand
             ShuffleDeck(); // Shuffle remaining cards
             const hands = DealCards(session.players.length);
             session.players.forEach((playerId, index) => {
                 io.to(playerId).emit('dealtCards', hands[index]);
+                // io.to(playerId).emit('assignCharacter', session.players[index].character);
+
             });
         } else {
             // Handle error: session doesn't exist or player not in session
             console.log(`Error starting game for session: ${sessionId}`);
         }
     });
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
     socket.on('startNewGame', () => {
         console.log('Received startNewGame event');
@@ -86,6 +110,46 @@ io.on('connection', (socket) => {
         console.log('Client disconnected');
         // Here, you would ideally also handle removing players from sessions on disconnect
     });
+
+    socket.on('makeAccusation', ({ playerId, suspect, weapon, room }) => {
+        const session = gameSessions[sessionId];
+        const player = session.players.find(p => p.id === playerId);
+        if (!player) {
+            console.log('Player not found in session');
+            return;
+        }
+    
+        // Logic to check if the accusation is correct
+        const isCorrect = checkAccusation(suspect, weapon, room);
+        io.to(playerId).emit('accusationResult', { correct: isCorrect });
+    
+        if (isCorrect) {
+            // Handle game win logic here
+            endGame(sessionId, player);
+        } else {
+            // Handle incorrect accusation, e.g., disabling player's turn
+            player.active = false;
+            broadcastGameState(sessionId);
+        }
+    });
+    
+    function checkAccusation(suspect, weapon, room) {
+        // Placeholder: validate against the game's solution
+        return suspect === 'CorrectSuspect' && weapon === 'CorrectWeapon' && room === 'CorrectRoom';
+    }
+    
+    function endGame(sessionId, winner) {
+        io.to(sessionId).emit('gameOver', { winner });
+        // Additional cleanup logic
+    }
+    
+    function broadcastGameState(sessionId) {
+        const session = gameSessions[sessionId];
+        session.players.forEach(playerId => {
+            io.to(playerId).emit('updateState', session);
+        });
+    }    
+
 });
 
 // Start the server on the specified port
