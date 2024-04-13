@@ -9,6 +9,7 @@ import MessageBoard from './components/MessageBoard';
 import Controls from './components/Controls';
 import CardDisplay from './components/CardDisplay';
 import Notepad from './components/Notepad';
+import CharacterDisplay from './components/Character';
 
 function App() {
   const [sessionId, setSessionId] = useState(null); // State to track the current session ID
@@ -16,6 +17,8 @@ function App() {
   const [participants, setParticipants] = useState([]);
   const socket = useContext(SocketContext);
   const [dealtCards, setDealtCards] = useState([]);
+  const [character, setCharacter] = useState(null);
+
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -29,12 +32,24 @@ function App() {
         setDealtCards(cards); // Store dealt cards
     });
 
+    socket.on('assignCharacter', (character) => {
+      console.log('Received character:', character);
+      if (character) {
+          setCharacter(character);
+      } else {
+          console.log('Character data is null or undefined');
+      }
+  });
+
     return () => {
         socket.off('updatePlayers', setParticipants);
         socket.off('gameIsStarting');
         socket.off('dealtCards');
+        socket.off('assignCharacter');
     };
 }, [socket]);
+
+console.log('Character in state:', character);
 
   return (
     <div class="App">
@@ -47,6 +62,7 @@ function App() {
         // Game view
         <>
         <h2>Clue-Less Game</h2>
+        {character && <CharacterDisplay character={character} />}
           <div class="top-row">
             <div class="left-side-main">
               <MessageBoard sessionId={sessionId}/>
