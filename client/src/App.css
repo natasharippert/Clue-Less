@@ -166,6 +166,13 @@
   border-radius: 20px;
   
 }
+.character-profile{
+  display: flex;
+  align-items:center;
+}
+#character-profile-image{
+  width: 5%;
+}
 
 /* MessageBoard.css */
 .messages-container {
