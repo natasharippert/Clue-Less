@@ -10,6 +10,7 @@ import Controls from './components/Controls';
 import CardDisplay from './components/CardDisplay';
 import Notepad from './components/Notepad';
 import CharacterDisplay from './components/Character';
+import e from 'express';
 class Card {
   constructor(type, name, imageURL) {
       this.type = type;
@@ -72,8 +73,7 @@ function App() {
    
    socket.on('receiveMessage', handleReceiveMessage);
  
-   
-  
+ 
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
