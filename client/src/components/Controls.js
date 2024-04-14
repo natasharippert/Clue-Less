@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import './Controls.css';
 
-const Controls =  ({ characters, rooms, weapons, onMakeMove, socket, sessionId, playerName  })  => {
+const Controls =  ({ characters, rooms, weapons, onMakeMove, onMakeSuggestion, socket, sessionId, playerName  })  => {
 
    
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +29,7 @@ const Controls =  ({ characters, rooms, weapons, onMakeMove, socket, sessionId, 
       onMakeMove(dir);
           socket.emit('makeMove', {
               direction: dir,
-              sessionID,
+              sessionId,
               playerName
           });
     };

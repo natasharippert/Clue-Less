@@ -691,3 +691,6 @@ function runGame() {
    rl.close();
 
 }
+
+
+module.exports = { move , makeSuggestion, checkAccusation , pollSuggestion};
