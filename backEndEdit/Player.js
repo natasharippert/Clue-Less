@@ -121,6 +121,9 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
          for (var i = 0; i < buttons.length; i++) {
             buttons[i].disabled = true;
          }
+         // document.querySelectorAll('.className button').forEach(elem => {
+      //    elem.disabled = true;
+
          // call this.interface.deactivateAll() method ???
       }
 
