@@ -28,15 +28,15 @@ const MainMenu = ({ setSessionId }) => {
     console.log('Attempting to start a new game...');
     socket.emit('startNewGame');
     //adding an event listener for menu button text input
-    const startButton = document.getElementById('menu-button');
-    const input = document.getElementById('menu-input');
-    input.addEventListener("keypress", (e) => {
-      const value = e.currentTarget.value;
-      startButton.disabled = false;
-      if (value === "") {
-        startButton.disabled = true;
-      }
-    });
+   // const startButton = document.getElementById('menu-button');
+   // const input = document.getElementById('menu-input');
+    //input.addEventListener("keypress", (e) => {
+    //  const value = e.currentTarget.value;
+     // startButton.disabled = false;
+     // if (value === "") {
+      //  startButton.disabled = true;
+    //  }
+   // });
   };
 
   const joinGame = () => {
