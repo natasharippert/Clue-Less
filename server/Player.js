@@ -10,6 +10,9 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
       next: nextPlayer,
       myTurn: false,
       active: true,
+      interface: [],
+      dropped: false,
+
 
       // Move the character to the requested position
       move(direction){
@@ -55,11 +58,25 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
       // Like move, but can go anywhere bc of someone’s suggestion
       jump(room) {
          this.room = room;
+         this.dropped = true;
       },
 
       // allow player to decide which card to show if polled successfully
       showCard(cardArray) {
          // show all cards to player and make them select one
+         inputStr = "Pick one of the following:\n";
+
+         for (let i = 0; i < cardArray.length; i++) {
+            inputStr = inputStr + String(i) + ": " + cardArray[i].name + "\n";
+         }
+
+         cardInd = rl.question(inputStr , function (string) {
+            return string;
+         });
+
+         cardInd = Number(cardInd);
+
+         console.log("Card shown is " + cardArray(cardInd).name);
       }, // end showCard
 
       // checks for matches when polled 
@@ -79,14 +96,16 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
 
       // Sets property that is the object the userID interfaces with
       setInterface(userID){
+         // @peyton
          // connect to server GUI for given player
       }, // end setInterface
 
 
-      // $$$$$$$$$$$$$$$$$$$$$$$
-      // generalfunc
-      genfun() {},
-      //$$$$$$$$$$$$$$$$$$$$$$$$
+      deactivate() {
+         // @peyton
+         // turn off all buttons for user
+         // call this.interface.deactivateAll() method ???
+      }
 
 
    } // end obj

@@ -52,23 +52,23 @@ function Deck(cards) {
       }, // end dealOne
 
 
-      mergeDecks(deckArray){
-         let newArray = deckArray[0].stack;
-
-         for (let id = 1; id < deckArray.length; id++) {
-            newArray.concat(deckArray[id].stack);
-         }
-
-         let newDeck = new Deck(newArray);
-         newDeck.shuffle();
-         return newDeck;
-      }, // end mergeDecks
+      
 
    } // end return for factory 
 
 
 } // End room factory
 
+function mergeDecks(deckArray){
+   let newArray = deckArray[0].stack;
 
+   for (let id = 1; id < deckArray.length; id++) {
+      newArray.concat(deckArray[id].stack);
+   }
 
-module.exports = { Deck };
+   let newDeck = new Deck(newArray);
+   newDeck.shuffle();
+   return newDeck;
+} // end mergeDecks
+
+module.exports = { Deck, mergeDecks };

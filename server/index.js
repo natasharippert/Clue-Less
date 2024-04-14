@@ -86,6 +86,14 @@ io.on('connection', (socket) => {
         console.log('Client disconnected');
         // Here, you would ideally also handle removing players from sessions on disconnect
     });
+
+    socket.on('makeMove', (data) => {
+      console.log('Emitting move:', data.dir);
+      socket.to(data.sessionId).emit('receiveMessage', data.dir);
+      io.to(data.sessionId).emit('receiveMessage', data.dir);
+      Driver.move(data.dir)
+  });
+
 });
 
 // Start the server on the specified port

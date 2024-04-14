@@ -19,6 +19,14 @@ function App() {
   const [dealtCards, setDealtCards] = useState([]);
   const [character, setCharacter] = useState(null);
 
+  const handleReceiveMessage = (message) => {
+      console.log("Message received:", message);
+      setMessages(prevMessages => [...prevMessages, message]);
+   };
+   
+   socket.on('receiveMessage', handleReceiveMessage);
+ 
+   
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -73,7 +81,17 @@ console.log('Character in state:', character);
             </div> 
         </div>
         <div class="bottom-row">
-          <Controls />
+          <Controls          
+            characters={character_cards} 
+            rooms={room_cards}           
+            weapons={weapon_cards}       
+            onMakeMove={(dir) => {
+               console.log(`Moving ${dir}`);
+            }}
+            socket={socket}
+            sessionId={sessionId}
+            playerName={playerName}
+         />
           
         </div>
         <Notepad />
