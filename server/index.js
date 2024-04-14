@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const Driver = require('./Driver');
 const { v4: uuidv4 } = require('uuid'); // For generating unique session IDs
 const {
     Card,
@@ -50,6 +51,13 @@ io.on('connection', (socket) => {
         socket.to(data.sessionId).emit('receiveMessage', suggestionMessage);
         io.to(sessionId).emit('receiveMessage', suggestionMessage);
     });
+
+   //  socket.on('makeMove', (data) => {
+   //    console.log('Emitting move:', data.dir);
+   //    socket.to(data.sessionId).emit('receiveMessage', data.dir);
+   //    io.to(data.sessionId).emit('receiveMessage', data.dir);
+   //    Driver.move(data.dir)
+   // });
 
     socket.on('startGame', (sessionId) => {
         const session = gameSessions[sessionId];
@@ -112,12 +120,7 @@ io.on('connection', (socket) => {
         // Here, you would ideally also handle removing players from sessions on disconnect
     });
 
-    socket.on('makeMove', (data) => {
-      console.log('Emitting move:', data.dir);
-      socket.to(data.sessionId).emit('receiveMessage', data.dir);
-      io.to(data.sessionId).emit('receiveMessage', data.dir);
-      Driver.move(data.dir)
-  });
+    
 
    
 
