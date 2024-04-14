@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import './Controls.css';
 
-const Controls = ({ characters, rooms, weapons, onMakeSuggestion }) => {
+const Controls = ({ characters, rooms, weapons, onMakeSuggestion, socket, sessionId, playerName  }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState('');
   const [selectedRoom, setSelectedRoom] = useState('');
@@ -11,7 +11,15 @@ const Controls = ({ characters, rooms, weapons, onMakeSuggestion }) => {
   const closeModal = () => setShowModal(false);
 
   const submitSuggestion = () => {
-    onMakeSuggestion(selectedCharacter, selectedRoom, selectedWeapon);
+    console.log(`Suggestion made with ${selectedCharacter}, ${selectedRoom}, ${selectedWeapon}`);
+        onMakeSuggestion(selectedCharacter, selectedRoom, selectedWeapon);
+        socket.emit('makeSuggestion', {
+            character: selectedCharacter,
+            room: selectedRoom,
+            weapon: selectedWeapon,
+            sessionId,
+            playerName
+        });
     closeModal();
   };
   return (

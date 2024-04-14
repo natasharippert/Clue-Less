@@ -47,7 +47,8 @@ io.on('connection', (socket) => {
     socket.on('makeSuggestion', (data) => {
         const suggestionMessage = `${data.playerName} suggests it was ${data.character} in the ${data.room} with the ${data.weapon}.`;
         console.log('Emitting suggestion:', suggestionMessage);
-        io.to(data.sessionId).emit('receiveMessage', suggestionMessage);
+        socket.to(data.sessionId).emit('receiveMessage', suggestionMessage);
+        io.to(sessionId).emit('receiveMessage', suggestionMessage);
     });
 
     socket.on('startGame', (sessionId) => {
@@ -110,45 +111,7 @@ io.on('connection', (socket) => {
         console.log('Client disconnected');
         // Here, you would ideally also handle removing players from sessions on disconnect
     });
-
-    socket.on('makeAccusation', ({ playerId, suspect, weapon, room }) => {
-        const session = gameSessions[sessionId];
-        const player = session.players.find(p => p.id === playerId);
-        if (!player) {
-            console.log('Player not found in session');
-            return;
-        }
-    
-        // Logic to check if the accusation is correct
-        const isCorrect = checkAccusation(suspect, weapon, room);
-        io.to(playerId).emit('accusationResult', { correct: isCorrect });
-    
-        if (isCorrect) {
-            // Handle game win logic here
-            endGame(sessionId, player);
-        } else {
-            // Handle incorrect accusation, e.g., disabling player's turn
-            player.active = false;
-            broadcastGameState(sessionId);
-        }
-    });
-    
-    function checkAccusation(suspect, weapon, room) {
-        // Placeholder: validate against the game's solution
-        return suspect === 'CorrectSuspect' && weapon === 'CorrectWeapon' && room === 'CorrectRoom';
-    }
-    
-    function endGame(sessionId, winner) {
-        io.to(sessionId).emit('gameOver', { winner });
-        // Additional cleanup logic
-    }
-    
-    function broadcastGameState(sessionId) {
-        const session = gameSessions[sessionId];
-        session.players.forEach(playerId => {
-            io.to(playerId).emit('updateState', session);
-        });
-    }    
+   
 
 });
 

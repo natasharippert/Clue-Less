@@ -60,6 +60,8 @@ function App() {
   const [dealtCards, setDealtCards] = useState([]);
   const [character, setCharacter] = useState(null);
   const [suggestion, setSuggestion] = useState(null);
+  const [playerName, setPlayerName] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -69,10 +71,25 @@ function App() {
       // You might want to deal cards here or ensure all game setup logic is triggered
   });
 
+  socket.on('suggestionMade', data => {
+    setMessages(messages => [...messages, `Suggestion: ${data.character} in the ${data.room} with the ${data.weapon}`]);
+});
+
   socket.on('joinGame', (sessionId) => {
     console.log(`Joining session: ${sessionId}`); // Ensure this is logging correctly
     socket.join(sessionId);
   });
+
+//   socket.on('receiveMessage', message => {
+//     setMessages(messages => [...messages, message]);
+// });
+
+const handleReceiveMessage = (message) => {
+  console.log("Message received:", message);
+  setMessages(prevMessages => [...prevMessages, message]);
+};
+
+socket.on('receiveMessage', handleReceiveMessage);
 
   
 
@@ -99,7 +116,8 @@ function App() {
         socket.off('gameIsStarting');
         socket.off('dealtCards');
         socket.off('assignCharacter');
-        // socket.off('receiveMessage');
+        socket.off('suggestionMade');
+        socket.off('receiveMessage');
     };
 }, [socket]);
 
@@ -136,9 +154,10 @@ console.log('Character in state:', character);
           weapons={weapon_cards}       
           onMakeSuggestion={(char, room, weap) => {
             console.log(`Suggestion made with ${char}, ${room}, ${weap}`);
-            setSuggestion({ character: char, room: room, weapon: weap });
-            // You can also send this to the server here
-  }}
+        }}
+        socket={socket}
+        sessionId={sessionId}
+        playerName={playerName}
 />
           
         </div>
