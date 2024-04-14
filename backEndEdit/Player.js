@@ -113,11 +113,14 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
     //  }, // end setInterface
 
 
-      deactivate(movebutton, suggestbutton, accusebutton) {
+      deactivate(buttons) {
          // @peyton
          // turn off all buttons for user
-         const menubutton = document.getElementById(".menu-button");
-         menubutton.disabled = true; 
+         
+         buttons = document.getElementsByTagName("button");
+         for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+         }
          // call this.interface.deactivateAll() method ???
       }
 
