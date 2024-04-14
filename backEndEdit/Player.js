@@ -1,5 +1,8 @@
 // player object
 
+const { default: App } = require('../client/src/App');
+const { SocketContext } = require('../client/src/components/SocketContext');
+
 function Player(userID, name, charName, startRoom, nextPlayer) {
    return {
       userID: userID,
@@ -93,17 +96,28 @@ function Player(userID, name, charName, startRoom, nextPlayer) {
 
          return matches;
       },
-
+      
+   
       // Sets property that is the object the userID interfaces with
-      setInterface(userID){
+     // setInterface(userID){
          // @peyton
          // connect to server GUI for given player
-      }, // end setInterface
+        // const io = require("socket.io")(3000, {
+           // cors: {
+              // origin: ['http://localhost:8080']
+           // }
+        // })
+       //  io.on("connection", socket => {
+          //  console.log(socket.userID);
+        // })
+    //  }, // end setInterface
 
 
-      deactivate() {
+      deactivate(movebutton, suggestbutton, accusebutton) {
          // @peyton
          // turn off all buttons for user
+         const menubutton = document.getElementById(".menu-button");
+         menubutton.disabled = true; 
          // call this.interface.deactivateAll() method ???
       }
 
