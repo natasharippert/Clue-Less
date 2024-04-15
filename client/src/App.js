@@ -52,6 +52,7 @@ const room_cards = [
   new Card('room', 'Michaels Office', 'images/card_office.png'),
 ]
 
+
 function App() {
   const [sessionId, setSessionId] = useState(null); // State to track the current session ID
   const [gameStarted, setGameStarted] = useState(false); // New state to track if the game has started
@@ -62,6 +63,7 @@ function App() {
   const [suggestion, setSuggestion] = useState(null);
   const [playerName, setPlayerName] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [currentTurn, setCurrentTurn] = useState(null);
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -91,11 +93,26 @@ const handleReceiveMessage = (message) => {
 
 socket.on('receiveMessage', handleReceiveMessage);
 
-  
+socket.on('turnEnded', () => {
+  // Update client state to indicate that the player's turn has ended
+  setCurrentTurn(null);
+  console.log("turn ended")
+});
+
+
+
+
 
     socket.on('dealtCards', (cards) => {
         setDealtCards(cards); // Store dealt cards
     });
+
+    const handlePlayerMove = (data) => {
+      console.log(`${data.playerName} has moved ${data.direction}`);
+      // Update your state or perform actions based on the move
+  };
+
+  socket.on('updatePlayerPosition', handlePlayerMove);
 
     // socket.on('receiveMessage', (message) => {
     //   console.log('New message received:', message); // Debugging output
@@ -111,6 +128,7 @@ socket.on('receiveMessage', handleReceiveMessage);
       }
   });
 
+ 
     return () => {
         socket.off('updatePlayers', setParticipants);
         socket.off('gameIsStarting');
@@ -118,8 +136,16 @@ socket.on('receiveMessage', handleReceiveMessage);
         socket.off('assignCharacter');
         socket.off('suggestionMade');
         socket.off('receiveMessage');
+        socket.off('updatePlayerPosition');
+        socket.off('turnEnded');
     };
 }, [socket]);
+
+const endTurn = () => {
+  console.log("turn ended")
+  socket.emit('endTurn', sessionId);
+};
+
 
 console.log('Character in state:', character);
 
@@ -161,6 +187,7 @@ console.log('Character in state:', character);
 />
           
         </div>
+        {currentTurn === socket.id && <button onClick={endTurn}>End Turn</button>}
         <Notepad />
         </>
       )}

@@ -13,6 +13,7 @@ const {
     DealCards,
     ResetDeck,
 } = require('./cardLogic');
+const { move } = require('./Driver');
 // Create a new express application
 const app = express();
 
@@ -44,6 +45,22 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('receiveMessage', message);
     });
 
+   
+    socket.on('playerMove', (data) => {
+        const movementMessage = `${data.playerName} moved ${data.direction}`
+        console.log(`${data.playerName} moves ${data.direction}`);
+        // Broadcast this move to all clients in the same session
+        io.to(data.sessionId).emit('updatePlayerPosition', {
+            playerName: data.playerName,
+            direction: data.direction
+        });
+        move(data.direction); 
+        socket.to(data.sessionId).emit('receiveMessage', movementMessage);
+        io.to(sessionId).emit('receiveMessage', movementMessage);
+    });
+    
+
+
     socket.on('makeSuggestion', (data) => {
         const suggestionMessage = `${data.playerName} suggests it was ${data.character} in the ${data.room} with the ${data.weapon}.`;
         console.log('Emitting suggestion:', suggestionMessage);
@@ -51,6 +68,8 @@ io.on('connection', (socket) => {
         io.to(sessionId).emit('receiveMessage', suggestionMessage);
     });
 
+
+    let currentTurnIndex = 0;
     socket.on('startGame', (sessionId) => {
         const session = gameSessions[sessionId];
         if (session && session.players.includes(socket.id)) { // Simple validation
@@ -72,9 +91,24 @@ io.on('connection', (socket) => {
                 // io.to(playerId).emit('assignCharacter', session.players[index].character);
 
             });
+            session.currentTurn = session.players[0]; // Assigning turn to the first player
+            io.to(session.currentTurn).emit('yourTurn');
         } else {
             // Handle error: session doesn't exist or player not in session
             console.log(`Error starting game for session: ${sessionId}`);
+        }
+    });
+
+    socket.on('turnEnded', (sessionId) => {
+        const session = gameSessions[sessionId];
+        if (session && session.players.includes(socket.id)) {
+            console.log(`Ending turn for session: ${sessionId}`);
+            // Move to the next player's turn
+            currentTurnIndex = (currentTurnIndex + 1) % session.players.length;
+            session.currentTurn = session.players[currentTurnIndex];
+            io.to(session.currentTurn).emit('yourTurn');
+        } else {
+            console.log(`Error ending turn for session: ${sessionId}`);
         }
     });
 
