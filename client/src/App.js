@@ -64,6 +64,14 @@ function App() {
   const [playerName, setPlayerName] = useState(null);
   const [messages, setMessages] = useState([]);
   const [currentTurn, setCurrentTurn] = useState(null);
+  const [tempName, setTempName] = useState("");
+
+  const handleNameSubmit = () => {
+    if (tempName.trim()) {
+        setPlayerName(tempName);
+        setTempName(""); // Clear the temporary name if necessary
+    }
+};
 
   useEffect(() => {
     socket.on('updatePlayers', setParticipants); // Update participants list on event
@@ -146,17 +154,33 @@ const endTurn = () => {
   socket.emit('endTurn', sessionId);
 };
 
-
+const handleMakeSuggestion = (char, room, weap) => {
+  console.log(`Suggestion made with ${char}, ${room}, ${weap}`);
+  if (sessionId && playerName) {
+      socket.emit('makeSuggestion', {
+          sessionId,
+          playerName,
+          character: char,
+          room: room,
+          weapon: weap
+      });
+  }
+};
 console.log('Character in state:', character);
 
   return (
-    <div class="App">
-      
-      {!sessionId ? (
-        <MainMenu setSessionId={setSessionId} setParticipants={setParticipants}/>
-      ) : !gameStarted ? (
-        <GameLobby sessionId={sessionId} participants={participants} onStartGame={() => setGameStarted(true)} />
-      ) : (
+    <div className="App">
+            {!sessionId ? (
+                <MainMenu setSessionId={setSessionId} setParticipants={setParticipants} />
+            ) : playerName === null ? ( // Explicitly check for null
+                <div>
+                    Enter Your Name:
+                    <input type="text" value={tempName} onChange={(e) => setTempName(e.target.value)} />
+                    <button onClick={handleNameSubmit}>Set Name</button>
+                </div>
+            ) : !gameStarted ? (
+                <GameLobby sessionId={sessionId} participants={participants} onStartGame={() => setGameStarted(true)} />
+            ) : (
         // Game view
         <>
         <h2>Clue-Less Game</h2>

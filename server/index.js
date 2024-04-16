@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
         // Broadcast message to all clients in the same session
         console.log(`Received message for session ${sessionId}: ${message}`);
         console.log(`Broadcasting message to session ${sessionId}`);
-        io.to(sessionId).emit('receiveMessage', message);
+        io.to(data.sessionId).emit('receiveMessage', message);
     });
 
    
@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
         });
         move(data.direction); 
         socket.to(data.sessionId).emit('receiveMessage', movementMessage);
-        io.to(sessionId).emit('receiveMessage', movementMessage);
+        io.to(data.sessionId).emit('receiveMessage', movementMessage);
     });
     
 
@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
         const suggestionMessage = `${data.playerName} suggests it was ${data.character} in the ${data.room} with the ${data.weapon}.`;
         console.log('Emitting suggestion:', suggestionMessage);
         socket.to(data.sessionId).emit('receiveMessage', suggestionMessage);
-        io.to(sessionId).emit('receiveMessage', suggestionMessage);
+        io.to(data.sessionId).emit('receiveMessage', suggestionMessage);
     });
 
 
